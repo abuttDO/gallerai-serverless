@@ -1,17 +1,22 @@
-environment: {}
-parameters: {}
+environment: { }
+parameters: { }
 packages:
-  - name: sample
-    environment: {}
-    parameters: {}
-    annotations: {}
+  - name: gallerai
+    environment: { }
+    parameters: { }
+    annotations: { }
     functions:
-      - name: hello
-        binary: false
-        main: ''
-        runtime: 'go:default'
-        web: true
-        parameters: {}
-        environment: {}
-        annotations: {}
-        limits: {}
+      - name: gallerai
+        environment: { }
+        parameters: { }
+        annotations: { }
+        functions:
+          - name: user
+            binary: false
+            main: ''
+            runtime: 'go:default'
+            web: true
+            parameters: { }
+            environment: { }
+            annotations: { }
+            limits: { }
