@@ -16,11 +16,11 @@ packages:
         annotations: { }
         limits: { }
       - name: register
-          binary: false
-          main: ''
-          runtime: 'go:default'
-          web: true
-          parameters: { }
-          environment: { }
-          annotations: { }
-          limits: { }
+        binary: false
+        main: ''
+        runtime: 'go:default'
+        web: true
+        parameters: { }
+        environment: { }
+        annotations: { }
+        limits: { }
