@@ -30,12 +30,24 @@ type Token struct {
 func Main(in Request) (*Response, error) {
 	err := validateRequest(in)
 	if err != nil {
-		return nil, err
+		return &Response{
+			StatusCode: 400,
+			Headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+			Body: fmt.Sprintf(`{"error": "%s"}`, err.Error()),
+		}, err
 	}
 	token := uuid.New().String()
 	tokenResponse, err := json.Marshal(Token{token})
 	if err != nil {
-		return nil, err
+		return &Response{
+			StatusCode: 400,
+			Headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+			Body: fmt.Sprintf(`{"error": "%s"}`, err.Error()),
+		}, err
 	}
 	return &Response{
 		StatusCode: 200,
