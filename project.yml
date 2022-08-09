@@ -1,22 +1,17 @@
 environment: { }
 parameters: { }
 packages:
-  - name: gallerai
+  - name: user
     environment: { }
     parameters: { }
     annotations: { }
-    functions:
-      - name: gallerai
-        environment: { }
+    actions:
+      - name: auth
+        binary: false
+        main: ''
+        runtime: 'go:default'
+        web: true
         parameters: { }
+        environment: { }
         annotations: { }
-        functions:
-          - name: user
-            binary: false
-            main: ''
-            runtime: 'go:default'
-            web: true
-            parameters: { }
-            environment: { }
-            annotations: { }
-            limits: { }
+        limits: { }
