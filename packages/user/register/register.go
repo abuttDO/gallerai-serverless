@@ -1,9 +1,11 @@
 package main
 
 import (
+	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"github.com/google/uuid"
+	"time"
 )
 
 // Request is for auth log in
@@ -68,5 +70,17 @@ func validateRequest(in Request) error {
 	if in.Username == "" {
 		return fmt.Errorf("username is required")
 	}
+	return nil
+}
+
+func createUser(in Request) error {
+	var user User
+	user.Email = in.Email
+	// sha256 the password in to a string
+	sha256Password := sha256.Sum256([]byte(in.Password))
+	user.Password = fmt.Sprintf("%x", sha256Password)
+	user.Username = in.Username
+	user.CreatedAt = time.Now()
+	user.UpdatedAt = time.Now()
 	return nil
 }

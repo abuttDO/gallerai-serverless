@@ -1,15 +1,26 @@
 package main
 
 import (
-	"crypto/sha256"
-	"encoding/json"
 	"fmt"
-	"github.com/google/uuid"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+	"os"
+	"time"
 )
+
+type User struct {
+	ID        int       `gorm:"primary_key" json:"id"`
+	Username  string    `gorm:"column:username" json:"username"`
+	Email     string    `gorm:"column:email" json:"email"`
+	Password  string    `gorm:"column:password" json:"password"`
+	UpdatedAt time.Time `gorm:"column:updated_at" json:"updated_at"`
+	CreatedAt time.Time `gorm:"column:created_at" json:"created_at"`
+}
 
 // Request is for auth log in
 type Request struct {
 	Username string `json:"username"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
 }
 
@@ -23,13 +34,23 @@ type Response struct {
 	Body string `json:"body,omitempty"`
 }
 
-type Token struct {
-	Token string `json:"token"`
+type Repository struct {
+	db *gorm.DB
+}
+
+var repo Repository
+
+func init() {
+	var err error
+	dsn := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=require", os.Getenv("DATABASE_URL"), os.Getenv("DATABASE_PORT"), os.Getenv("DATABASE_USER"), os.Getenv("DATABASE_NAME"), os.Getenv("DB_PASSWORD"))
+	repo.db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		panic(err)
+	}
 }
 
 func Main(in Request) (*Response, error) {
-	token := uuid.New().String()
-	tokenResponse, err := json.Marshal(Token{token})
+	err := repo.db.Migrator().AutoMigrate(&User{})
 	if err != nil {
 		return &Response{
 			StatusCode: 400,
@@ -44,22 +65,6 @@ func Main(in Request) (*Response, error) {
 		Headers: map[string]string{
 			"Content-Type": "application/json",
 		},
-		Body: string(tokenResponse),
+		Body: "All done",
 	}, nil
-}
-
-func getUserByEmail(email string) (user *User) {
-	repo.db.First(&user)
-	return user
-}
-
-func validatePassword(password string, passwordHash string) bool {
-	// sha256 the password
-	sha256Password := sha256.Sum256([]byte(password))
-	passwordToCheck := fmt.Sprintf("%x", sha256Password)
-	return passwordToCheck == passwordHash
-}
-
-func issueSignedJwtToken(user *User) (string, error) {
-	return "", nil
 }

@@ -24,3 +24,12 @@ packages:
         environment: { }
         annotations: { }
         limits: { }
+      - name: migrate
+        binary: false
+        main: ''
+        runtime: 'go:default'
+        web: true
+        parameters: { }
+        environment: { }
+        annotations: { }
+        limits: { }
