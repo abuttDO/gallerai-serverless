@@ -11,6 +11,11 @@ type Repository struct {
 	db *gorm.DB
 }
 
+// Request details what is being asked to list
+type Request struct {
+	Username string `json:"username"`
+}
+
 var repo Repository
 
 func init() {
@@ -20,4 +25,8 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func Main(in Request) (*Response, error) {
+	return makeResponse(200, []byte(`{"message": "success"}`), nil), nil
 }
