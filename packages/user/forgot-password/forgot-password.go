@@ -21,8 +21,7 @@ const (
 )
 
 var (
-	TokenExpiry       = time.Now().Add(time.Hour * 24)
-	InvalidTokenError = fmt.Errorf("invalid token")
+	TokenExpiry = time.Now().Add(time.Hour * 24)
 )
 
 func Main(in Request) (response *Response, err error) {
