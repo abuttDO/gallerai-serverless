@@ -1,32 +1,23 @@
 package main
 
-import (
-	"fmt"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
-	"os"
-)
-
-type Repository struct {
-	db *gorm.DB
-}
+import "fmt"
 
 // Request details what is being asked to list
 type Request struct {
 	Username string `json:"username"`
 }
 
-var repo Repository
-
-func init() {
-	var err error
-	dsn := fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=require", os.Getenv("DATABASE_URL"), os.Getenv("DATABASE_PORT"), os.Getenv("DATABASE_USER"), os.Getenv("DATABASE_NAME"), os.Getenv("DATABASE_PASSWORD"))
-	repo.db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+func Main(in Request) (*Response, error) {
+	images, err := getImagesByUsername(in.Username)
 	if err != nil {
-		panic(err)
+		return makeResponse(500, fmt.Sprintf(`{"error": "%s"}`, err), err), err
 	}
+	return makeResponse(200, images, nil), nil
 }
 
-func Main(in Request) (*Response, error) {
-	return makeResponse(200, []byte(`{"message": "success"}`), nil), nil
+func getImagesByUsername(username string) ([]GalleryImage, error) {
+	repo.db = initDatabase()
+	var images []GalleryImage
+	repo.db.Where("username = ?", username).Order("id desc").Find(&images)
+	return images, nil
 }

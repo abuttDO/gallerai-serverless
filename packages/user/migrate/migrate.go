@@ -1,9 +1,5 @@
 package main
 
-import (
-	"gorm.io/gorm"
-)
-
 // Request is for auth log in
 type Request struct {
 	Username string `json:"username"`
@@ -11,16 +7,11 @@ type Request struct {
 	Password string `json:"password"`
 }
 
-type Repository struct {
-	db *gorm.DB
-}
-
-var repo Repository
-
 var allSchemas = []interface{}{
 	&User{},
 	&GalleryImage{},
 	&GalleryImageTags{},
+	&ForgotPassword{},
 }
 
 func Main(in Request) (*Response, error) {

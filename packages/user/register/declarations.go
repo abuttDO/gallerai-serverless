@@ -1,6 +1,9 @@
 package main
 
-import "time"
+import (
+	"gorm.io/gorm"
+	"time"
+)
 
 type User struct {
 	ID        int       `gorm:"primary_key" json:"id"`
@@ -36,4 +39,24 @@ type Response struct {
 	Headers map[string]string `json:"headers,omitempty"`
 	// Body will contain the token.
 	Body string `json:"body,omitempty"`
+}
+
+type Repository struct {
+	db *gorm.DB
+}
+
+type ForgotPassword struct {
+	ID              int       `gorm:"primary_key" json:"id"`
+	UsernameOrEmail string    `gorm:"column:username_or_email" json:"username_or_email"`
+	Token           string    `gorm:"column:token" json:"token"`
+	Expiry          time.Time `gorm:"column:expiry" json:"expiry"`
+	CreatedAt       time.Time `gorm:"column:created_at" json:"created_at"`
+}
+
+type Reaction struct {
+	ID        uint   `gorm:"primary_key" json:"id"`
+	UserID    int    `gorm:"column:user_id" json:"user_id"`
+	ImageID   int    `gorm:"column:image_id" json:"image_id"`
+	Reaction  string `gorm:"column:reaction" json:"reaction"`
+	CreatedAt string `gorm:"column:created_at" json:"created_at"`
 }

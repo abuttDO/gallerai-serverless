@@ -4,6 +4,7 @@ environment:
   DATABASE_NAME: ${DATABASE_NAME}
   DATABASE_PORT: ${DATABASE_PORT}
   DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+  HMAC_SECRET: ${HMAC_SECRET}
 parameters: { }
 packages:
   - name: user
@@ -38,12 +39,39 @@ packages:
         environment: { }
         annotations: { }
         limits: { }
+      - name: forgot-password
+        binary: false
+        main: ''
+        runtime: 'go:default'
+        web: true
+        parameters: { }
+        environment: { }
+        annotations: { }
+        limits: { }
   - name: gallery
     environment: { }
     parameters: { }
     annotations: { }
     actions:
       - name: single
+        binary: false
+        main: ''
+        runtime: 'go:default'
+        web: true
+        parameters: { }
+        environment: { }
+        annotations: { }
+        limits: { }
+      - name: list
+        binary: false
+        main: ''
+        runtime: 'go:default'
+        web: true
+        parameters: { }
+        environment: { }
+        annotations: { }
+        limits: { }
+      - name: reaction
         binary: false
         main: ''
         runtime: 'go:default'
