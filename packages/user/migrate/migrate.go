@@ -12,6 +12,7 @@ var allSchemas = []interface{}{
 	&GalleryImage{},
 	&GalleryImageTags{},
 	&ForgotPassword{},
+	&Reaction{},
 }
 
 func Main(in Request) (*Response, error) {

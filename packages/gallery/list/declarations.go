@@ -1,8 +1,13 @@
 package main
 
 import (
+	"errors"
 	"gorm.io/gorm"
 	"time"
+)
+
+var (
+	InvalidTokenError = errors.New("invalid token")
 )
 
 type User struct {
@@ -18,7 +23,7 @@ type GalleryImage struct {
 	ID          int       `gorm:"primary_key" json:"id"`
 	Title       string    `gorm:"column:title" json:"title"`
 	Description string    `gorm:"column:description" json:"description"`
-	UserID      string    `gorm:"column:user_id" json:"user_id"`
+	UserID      int       `gorm:"column:user_id" json:"user_id"`
 	URL         string    `gorm:"column:url" json:"url"`
 	Thumbnail   string    `gorm:"column:thumbnail" json:"thumbnail"`
 	CreatedAt   time.Time `gorm:"column:created_at" json:"created_at"`
@@ -59,4 +64,8 @@ type Reaction struct {
 	ImageID   int    `gorm:"column:image_id" json:"image_id"`
 	Reaction  string `gorm:"column:reaction" json:"reaction"`
 	CreatedAt string `gorm:"column:created_at" json:"created_at"`
+}
+
+type Token struct {
+	Token string `json:"token"`
 }

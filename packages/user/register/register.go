@@ -2,9 +2,7 @@ package main
 
 import (
 	"crypto/sha256"
-	"encoding/json"
 	"fmt"
-	"github.com/google/uuid"
 	"time"
 )
 
@@ -15,20 +13,18 @@ type Request struct {
 	Password string `json:"password"`
 }
 
-type Token struct {
-	Token string `json:"token"`
-}
-
 func Main(in Request) (*Response, error) {
 	err := validateRequest(in)
 	if err != nil {
 		return makeResponse(400, fmt.Sprintf(`{"error": "%s"}`, err.Error()), err), err
 	}
-	token := uuid.New().String()
-	tokenResponse, err := json.Marshal(Token{token})
+	user := createUser(in)
+	token, err := issueSignedJwtToken(&user)
 	if err != nil {
 		return makeResponse(400, fmt.Sprintf(`{"error": "%s"}`, err.Error()), err), err
 	}
+	var tokenResponse Token
+	tokenResponse.Token = token
 	return makeResponse(200, tokenResponse, nil), nil
 }
 
@@ -45,7 +41,8 @@ func validateRequest(in Request) error {
 	return nil
 }
 
-func createUser(in Request) error {
+func createUser(in Request) User {
+	repo.db = initDatabase()
 	var user User
 	user.Email = in.Email
 	// sha256 the password in to a string
@@ -54,5 +51,6 @@ func createUser(in Request) error {
 	user.Username = in.Username
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
-	return nil
+	repo.db.Create(&user)
+	return user
 }

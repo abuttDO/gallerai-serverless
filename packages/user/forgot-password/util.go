@@ -7,6 +7,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"os"
+	"time"
 )
 
 var repo Repository
@@ -63,4 +64,21 @@ func validateToken(tokenString string) (user string, valid bool, err error) {
 		return user, true, nil
 	}
 	return "", false, err
+}
+
+func issueSignedJwtToken(user *User) (string, error) {
+	secret := []byte(os.Getenv("HMAC_SECRET"))
+	// Create a new token object, specifying signing method and the claims
+	// you would like it to contain.
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"user": user.Username,
+		"nbf":  time.Date(2015, 10, 10, 12, 0, 0, 0, time.UTC).Unix(),
+	})
+
+	// Sign and get the complete encoded token as a string using the secret
+	tokenString, err := token.SignedString(secret)
+	if err != nil {
+		return "", err
+	}
+	return tokenString, nil
 }
