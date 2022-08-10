@@ -1,4 +1,4 @@
-module gallerai-gallery-single
+module gallerai-shared
 
 go 1.18
 

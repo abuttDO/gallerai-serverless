@@ -12,16 +12,14 @@ type User struct {
 }
 
 type GalleryImage struct {
-	ID          int                `gorm:"primary_key" json:"id"`
-	ImageID     string             `gorm:"column:image_id" json:"image_id"`
-	Title       string             `gorm:"column:title" json:"title"`
-	Description string             `gorm:"column:description" json:"description"`
-	Tags        []GalleryImageTags `gorm:"foreignkey:imageID" json:"tags"`
-	UserID      string             `gorm:"column:user_id" json:"user_id"`
-	URL         string             `gorm:"column:url" json:"url"`
-	Thumbnail   string             `gorm:"column:thumbnail" json:"thumbnail"`
-	CreatedAt   time.Time          `gorm:"column:created_at" json:"created_at"`
-	UpdatedAt   time.Time          `gorm:"column:updated_at" json:"updated_at"`
+	ID          int       `gorm:"primary_key" json:"id"`
+	Title       string    `gorm:"column:title" json:"title"`
+	Description string    `gorm:"column:description" json:"description"`
+	UserID      string    `gorm:"column:user_id" json:"user_id"`
+	URL         string    `gorm:"column:url" json:"url"`
+	Thumbnail   string    `gorm:"column:thumbnail" json:"thumbnail"`
+	CreatedAt   time.Time `gorm:"column:created_at" json:"created_at"`
+	UpdatedAt   time.Time `gorm:"column:updated_at" json:"updated_at"`
 }
 
 type GalleryImageTags struct {
